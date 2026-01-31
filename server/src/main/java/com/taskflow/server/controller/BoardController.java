@@ -9,18 +9,20 @@ import com.taskflow.server.util.SecurityUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/boards")
-@RequiredArgsConstructor
 @Tag(name = "Boards", description = "Board management endpoints")
 public class BoardController {
 
     private final BoardService boardService;
+
+    public BoardController(BoardService boardService) {
+        this.boardService = boardService;
+    }
 
     @PostMapping
     @Operation(summary = "Create a new board")

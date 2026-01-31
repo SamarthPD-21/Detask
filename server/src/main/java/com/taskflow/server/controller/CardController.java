@@ -12,7 +12,6 @@ import com.taskflow.server.util.SecurityUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -23,12 +22,16 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api")
-@RequiredArgsConstructor
 @Tag(name = "Cards", description = "Card management endpoints")
 public class CardController {
 
     private final CardService cardService;
     private final FileService fileService;
+
+    public CardController(CardService cardService, FileService fileService) {
+        this.cardService = cardService;
+        this.fileService = fileService;
+    }
 
     @PostMapping("/lists/{listId}/cards")
     @Operation(summary = "Create a new card in a list")

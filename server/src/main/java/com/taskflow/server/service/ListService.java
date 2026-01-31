@@ -9,8 +9,8 @@ import com.taskflow.server.repository.BoardRepository;
 import com.taskflow.server.repository.CardRepository;
 import com.taskflow.server.repository.TaskListRepository;
 import com.taskflow.server.util.MapperUtils;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,10 +20,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Slf4j
 @Service
-@RequiredArgsConstructor
 public class ListService {
+
+    private static final Logger log = LoggerFactory.getLogger(ListService.class);
 
     private final TaskListRepository listRepository;
     private final BoardRepository boardRepository;
@@ -31,6 +31,17 @@ public class ListService {
     private final BoardService boardService;
     private final ActivityService activityService;
     private final MapperUtils mapperUtils;
+
+    public ListService(TaskListRepository listRepository, BoardRepository boardRepository,
+                       CardRepository cardRepository, BoardService boardService,
+                       ActivityService activityService, MapperUtils mapperUtils) {
+        this.listRepository = listRepository;
+        this.boardRepository = boardRepository;
+        this.cardRepository = cardRepository;
+        this.boardService = boardService;
+        this.activityService = activityService;
+        this.mapperUtils = mapperUtils;
+    }
 
     @Transactional
     @CacheEvict(value = "boards", key = "#boardId")

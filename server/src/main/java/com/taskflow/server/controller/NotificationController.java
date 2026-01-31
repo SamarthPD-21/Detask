@@ -7,7 +7,6 @@ import com.taskflow.server.service.NotificationService;
 import com.taskflow.server.util.SecurityUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,11 +15,14 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/notifications")
-@RequiredArgsConstructor
 @Tag(name = "Notifications", description = "Notification management endpoints")
 public class NotificationController {
 
     private final NotificationService notificationService;
+
+    public NotificationController(NotificationService notificationService) {
+        this.notificationService = notificationService;
+    }
 
     @GetMapping
     @Operation(summary = "Get user notifications")

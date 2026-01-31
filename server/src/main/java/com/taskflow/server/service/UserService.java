@@ -7,8 +7,8 @@ import com.taskflow.server.exception.ResourceNotFoundException;
 import com.taskflow.server.model.User;
 import com.taskflow.server.repository.UserRepository;
 import com.taskflow.server.util.MapperUtils;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
@@ -19,13 +19,18 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Slf4j
 @Service
-@RequiredArgsConstructor
 public class UserService {
+
+    private static final Logger log = LoggerFactory.getLogger(UserService.class);
 
     private final UserRepository userRepository;
     private final MapperUtils mapperUtils;
+
+    public UserService(UserRepository userRepository, MapperUtils mapperUtils) {
+        this.userRepository = userRepository;
+        this.mapperUtils = mapperUtils;
+    }
 
     @Cacheable(value = "users", key = "#userId")
     public UserResponse getUserById(String userId) {

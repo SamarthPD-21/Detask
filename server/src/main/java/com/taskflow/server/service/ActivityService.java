@@ -9,8 +9,8 @@ import com.taskflow.server.repository.ActivityRepository;
 import com.taskflow.server.repository.UserRepository;
 import com.taskflow.server.util.MapperUtils;
 import com.taskflow.server.util.SecurityUtils;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -20,14 +20,20 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Slf4j
 @Service
-@RequiredArgsConstructor
 public class ActivityService {
+
+    private static final Logger log = LoggerFactory.getLogger(ActivityService.class);
 
     private final ActivityRepository activityRepository;
     private final UserRepository userRepository;
     private final MapperUtils mapperUtils;
+
+    public ActivityService(ActivityRepository activityRepository, UserRepository userRepository, MapperUtils mapperUtils) {
+        this.activityRepository = activityRepository;
+        this.userRepository = userRepository;
+        this.mapperUtils = mapperUtils;
+    }
 
     public void logActivity(String boardId, String cardId, String listId, ActivityType type, String description) {
         String userId = SecurityUtils.getCurrentUserId();

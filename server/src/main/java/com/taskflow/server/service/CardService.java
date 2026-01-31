@@ -10,8 +10,8 @@ import com.taskflow.server.repository.CardRepository;
 import com.taskflow.server.repository.TaskListRepository;
 import com.taskflow.server.repository.UserRepository;
 import com.taskflow.server.util.MapperUtils;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -24,10 +24,10 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@Slf4j
 @Service
-@RequiredArgsConstructor
 public class CardService {
+
+    private static final Logger log = LoggerFactory.getLogger(CardService.class);
 
     private final CardRepository cardRepository;
     private final TaskListRepository listRepository;
@@ -37,6 +37,20 @@ public class CardService {
     private final ActivityService activityService;
     private final NotificationService notificationService;
     private final MapperUtils mapperUtils;
+
+    public CardService(CardRepository cardRepository, TaskListRepository listRepository,
+                       BoardRepository boardRepository, UserRepository userRepository,
+                       BoardService boardService, ActivityService activityService,
+                       NotificationService notificationService, MapperUtils mapperUtils) {
+        this.cardRepository = cardRepository;
+        this.listRepository = listRepository;
+        this.boardRepository = boardRepository;
+        this.userRepository = userRepository;
+        this.boardService = boardService;
+        this.activityService = activityService;
+        this.notificationService = notificationService;
+        this.mapperUtils = mapperUtils;
+    }
 
     @Transactional
     @CacheEvict(value = {"boards", "cards"}, allEntries = true)
@@ -189,8 +203,9 @@ public class CardService {
 
         boardService.findBoardAndCheckAccess(card.getBoardId(), userId);
 
-        TaskList sourceList = listRepository.findById(card.getListId())
-                .orElseThrow(() -> new ResourceNotFoundException("List", "id", card.getListId()));
+        String sourceListId = card.getListId();
+        TaskList sourceList = listRepository.findById(sourceListId)
+                .orElseThrow(() -> new ResourceNotFoundException("List", "id", sourceListId));
 
         TaskList targetList = listRepository.findById(request.getTargetListId())
                 .orElseThrow(() -> new ResourceNotFoundException("List", "id", request.getTargetListId()));

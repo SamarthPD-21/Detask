@@ -3,17 +3,19 @@ package com.taskflow.server.util;
 import com.taskflow.server.dto.response.*;
 import com.taskflow.server.model.*;
 import com.taskflow.server.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
-@RequiredArgsConstructor
 public class MapperUtils {
 
     private final UserRepository userRepository;
+
+    public MapperUtils(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     public UserResponse toUserResponse(User user) {
         if (user == null) return null;

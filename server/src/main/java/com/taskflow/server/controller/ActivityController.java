@@ -6,7 +6,6 @@ import com.taskflow.server.dto.response.PageResponse;
 import com.taskflow.server.service.ActivityService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,11 +13,14 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api")
-@RequiredArgsConstructor
 @Tag(name = "Activities", description = "Activity log endpoints")
 public class ActivityController {
 
     private final ActivityService activityService;
+
+    public ActivityController(ActivityService activityService) {
+        this.activityService = activityService;
+    }
 
     @GetMapping("/boards/{boardId}/activities")
     @Operation(summary = "Get board activities")

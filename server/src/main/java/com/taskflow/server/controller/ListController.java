@@ -8,7 +8,6 @@ import com.taskflow.server.util.SecurityUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,11 +16,14 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api")
-@RequiredArgsConstructor
 @Tag(name = "Lists", description = "List management endpoints")
 public class ListController {
 
     private final ListService listService;
+
+    public ListController(ListService listService) {
+        this.listService = listService;
+    }
 
     @PostMapping("/boards/{boardId}/lists")
     @Operation(summary = "Create a new list in a board")

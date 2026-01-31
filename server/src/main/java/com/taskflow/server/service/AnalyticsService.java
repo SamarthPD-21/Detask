@@ -6,8 +6,8 @@ import com.taskflow.server.model.Card;
 import com.taskflow.server.model.Priority;
 import com.taskflow.server.repository.BoardRepository;
 import com.taskflow.server.repository.CardRepository;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -16,13 +16,18 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@Slf4j
 @Service
-@RequiredArgsConstructor
 public class AnalyticsService {
+
+    private static final Logger log = LoggerFactory.getLogger(AnalyticsService.class);
 
     private final BoardRepository boardRepository;
     private final CardRepository cardRepository;
+
+    public AnalyticsService(BoardRepository boardRepository, CardRepository cardRepository) {
+        this.boardRepository = boardRepository;
+        this.cardRepository = cardRepository;
+    }
 
     @Cacheable(value = "analytics", key = "#userId")
     public AnalyticsResponse getUserAnalytics(String userId) {

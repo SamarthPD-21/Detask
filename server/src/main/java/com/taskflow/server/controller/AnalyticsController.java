@@ -6,17 +6,19 @@ import com.taskflow.server.service.AnalyticsService;
 import com.taskflow.server.util.SecurityUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/analytics")
-@RequiredArgsConstructor
 @Tag(name = "Analytics", description = "Analytics and reporting endpoints")
 public class AnalyticsController {
 
     private final AnalyticsService analyticsService;
+
+    public AnalyticsController(AnalyticsService analyticsService) {
+        this.analyticsService = analyticsService;
+    }
 
     @GetMapping
     @Operation(summary = "Get user analytics")

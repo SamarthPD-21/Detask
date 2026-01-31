@@ -6,8 +6,8 @@ import com.taskflow.server.model.Notification;
 import com.taskflow.server.model.NotificationType;
 import com.taskflow.server.repository.NotificationRepository;
 import com.taskflow.server.util.MapperUtils;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -18,13 +18,18 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Slf4j
 @Service
-@RequiredArgsConstructor
 public class NotificationService {
+
+    private static final Logger log = LoggerFactory.getLogger(NotificationService.class);
 
     private final NotificationRepository notificationRepository;
     private final MapperUtils mapperUtils;
+
+    public NotificationService(NotificationRepository notificationRepository, MapperUtils mapperUtils) {
+        this.notificationRepository = notificationRepository;
+        this.mapperUtils = mapperUtils;
+    }
 
     public void createNotification(String userId, String title, String message,
                                    NotificationType type, String boardId, String cardId) {

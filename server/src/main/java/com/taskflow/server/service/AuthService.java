@@ -12,8 +12,8 @@ import com.taskflow.server.repository.UserRepository;
 import com.taskflow.server.security.JwtTokenProvider;
 import com.taskflow.server.security.UserPrincipal;
 import com.taskflow.server.util.MapperUtils;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -25,10 +25,10 @@ import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.UUID;
 
-@Slf4j
 @Service
-@RequiredArgsConstructor
 public class AuthService {
+
+    private static final Logger log = LoggerFactory.getLogger(AuthService.class);
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -36,6 +36,17 @@ public class AuthService {
     private final JwtTokenProvider tokenProvider;
     private final MapperUtils mapperUtils;
     private final EmailService emailService;
+
+    public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder,
+                       AuthenticationManager authenticationManager, JwtTokenProvider tokenProvider,
+                       MapperUtils mapperUtils, EmailService emailService) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.authenticationManager = authenticationManager;
+        this.tokenProvider = tokenProvider;
+        this.mapperUtils = mapperUtils;
+        this.emailService = emailService;
+    }
 
     @Transactional
     public AuthResponse register(RegisterRequest request) {

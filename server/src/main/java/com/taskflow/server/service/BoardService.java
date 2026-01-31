@@ -15,8 +15,8 @@ import com.taskflow.server.repository.TaskListRepository;
 import com.taskflow.server.repository.UserRepository;
 import com.taskflow.server.util.MapperUtils;
 import com.taskflow.server.util.SecurityUtils;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
@@ -30,10 +30,10 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@Slf4j
 @Service
-@RequiredArgsConstructor
 public class BoardService {
+
+    private static final Logger log = LoggerFactory.getLogger(BoardService.class);
 
     private final BoardRepository boardRepository;
     private final TaskListRepository listRepository;
@@ -41,6 +41,17 @@ public class BoardService {
     private final UserRepository userRepository;
     private final ActivityService activityService;
     private final MapperUtils mapperUtils;
+
+    public BoardService(BoardRepository boardRepository, TaskListRepository listRepository,
+                        CardRepository cardRepository, UserRepository userRepository,
+                        ActivityService activityService, MapperUtils mapperUtils) {
+        this.boardRepository = boardRepository;
+        this.listRepository = listRepository;
+        this.cardRepository = cardRepository;
+        this.userRepository = userRepository;
+        this.activityService = activityService;
+        this.mapperUtils = mapperUtils;
+    }
 
     @Transactional
     public BoardResponse createBoard(BoardRequest request, String userId) {

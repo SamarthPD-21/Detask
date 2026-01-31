@@ -2,7 +2,8 @@ package com.taskflow.server.service;
 
 import com.taskflow.server.exception.BadRequestException;
 import com.taskflow.server.model.Attachment;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -18,9 +19,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
-@Slf4j
 @Service
 public class FileService {
+
+    private static final Logger log = LoggerFactory.getLogger(FileService.class);
 
     @Value("${file.upload-dir}")
     private String uploadDir;
